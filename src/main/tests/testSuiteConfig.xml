@@ -1,9 +1,0 @@
-<suite name="Test Suite">
-    <parameter name="browserName" value="chrome" />
-    <parameter name="envBaseURL" value="https://adp-dev.limelighthealth.com" />
-    <test name="Test Suite">
-        <classes>
-            <class name="tests.TestSuite" />
-        </classes>
-    </test>
-</suite>

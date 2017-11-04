@@ -1,0 +1,9 @@
+<suite name="LinkedIn Test Suite">
+    <parameter name="browserName" value="chrome" />
+    <parameter name="envBaseURL" value="https://linkedin.com" />
+    <test name="Experience Section Test Suite">
+        <classes>
+            <class name="tests.functional.ExperienceSectionTestSuite" />
+        </classes>
+    </test>
+</suite>

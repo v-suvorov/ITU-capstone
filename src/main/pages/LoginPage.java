@@ -1,34 +1,39 @@
 package pages;
 
+import com.paulhammant.ngwebdriver.NgWebDriver;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class LoginPage {
-    @FindBy(id = "loginId")
-    private WebElement usernameFld;
+public class LoginPage extends PageObject {
 
-    @FindBy(id = "loginPassword")
+    @FindBy(id = "login-email")
+    private WebElement loginEmailFld;
+
+    @FindBy(id = "login-password")
     private WebElement passwordFld;
 
-    @FindBy(id = "submitLogin")
-    private WebElement loginBtn;
+    @FindBy(id = "login-submit")
+    private WebElement signInBtn;
 
-    public LoginPage(WebDriver driver) {
-        PageFactory.initElements(driver, this);
+    public LoginPage(WebDriver driver, NgWebDriver ngWebDriver) {
+        this.driver = driver;
+        this.ngWebDriver = ngWebDriver;
+        PageFactory.initElements(this.driver, this);
     }
 
-    public void setLoginValue(WebDriver driver, String username) {
-        usernameFld.sendKeys(username);
+    public void setLoginValue(String username) {
+        loginEmailFld.sendKeys(username);
     }
 
-    public void setPasswordValue(WebDriver driver, String password) {
+    public void setPasswordValue(String password) {
         passwordFld.sendKeys(password);
     }
 
-    public void clickLoginBtn(WebDriver driver) {
-        loginBtn.click();
+    public void clickLoginBtn() {
+        clickElement(signInBtn);
+        ngWebDriver.waitForAngularRequestsToFinish();
     }
 
 }
