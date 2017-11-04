@@ -1,4 +1,4 @@
-package tests;
+package tests.functional;
 
 import com.paulhammant.ngwebdriver.NgWebDriver;
 import helpers.DriverFactory;

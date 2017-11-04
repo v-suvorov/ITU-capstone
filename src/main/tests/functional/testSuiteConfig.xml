@@ -3,7 +3,7 @@
     <parameter name="envBaseURL" value="https://adp-dev.limelighthealth.com" />
     <test name="Test Suite">
         <classes>
-            <class name="tests.TestSuite" />
+            <class name="tests.functional.TestSuite" />
         </classes>
     </test>
 </suite>
