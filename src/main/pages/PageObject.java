@@ -25,9 +25,20 @@ public class PageObject {
      * jse.executeScript("arguments[0].scrollIntoView(true);", element);
      * doesn't work for LinkedIn. Element may be not in the DOM yet
      */
-    protected void scrollPage(int Ypixels) {
+    protected void scrollPage(int YpixelsFromTop) {
+        final int scrollStep = 100;
+        int scrollNumber = YpixelsFromTop / scrollStep;
+        int scrollRemain = YpixelsFromTop % scrollStep;
+        int prevY = 0;
         jsExecutor = (JavascriptExecutor) driver;
-        jsExecutor.executeScript("scroll(0, " + Ypixels + ");");
+        for (int i = 0; i < scrollNumber; i++) {
+            int nextY = prevY + scrollStep;
+            jsExecutor.executeScript("scroll(" + prevY + ", " + nextY + ");");
+            prevY = nextY;
+            threadSleep(100);
+        }
+        jsExecutor.executeScript("scroll(" + prevY + ", " + (prevY + scrollRemain) + ");");
+        threadSleep(100);
     }
 
     protected void scrollToElement(WebElement element) {
@@ -137,6 +148,7 @@ public class PageObject {
         Actions actions = new Actions(driver);
         Action dragAndDrop = actions.dragAndDropBy(element, moveX, moveY).build();
         dragAndDrop.perform();
+        threadSleep(1000);
     }
 
     protected void dragAndDropElement(WebElement elementDrag, WebElement elementDrop) {
@@ -147,9 +159,11 @@ public class PageObject {
 
     protected void dragAndDropVertical(WebElement element, int startY, int finishY) {
         Actions actions = new Actions(driver);
-        int offset = (finishY > startY ? 10 : -10);
+        int offset = (finishY > startY ? 20 : -20);
+        threadSleep(1000);
         Action dragAndDrop = actions.dragAndDropBy(element, 0, (finishY - startY + offset)).build();
         dragAndDrop.perform();
+        threadSleep(1000);
     }
 
     protected void waitForJSReadyState() {
@@ -162,5 +176,13 @@ public class PageObject {
             }
         };
         wait.until(isReadyState);
+    }
+
+    private void threadSleep(int mills) {
+        try {
+            Thread.sleep(mills);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

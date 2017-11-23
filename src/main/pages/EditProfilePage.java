@@ -2,11 +2,8 @@ package pages;
 
 import com.paulhammant.ngwebdriver.NgWebDriver;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
@@ -53,11 +50,9 @@ public class EditProfilePage extends PageObject {
     public void clickAddExperienceBtn() {
         scrollPage(1000);
         clickElement(addPositionBtn);
-        ngWebDriver.waitForAngularRequestsToFinish();
     }
 
     private List<WebElement> getPositionCardElements() {
-        ngWebDriver.waitForAngularRequestsToFinish();
         scrollPage(1000);
         waitForElementToBeVisible(positionCardsCSSLocator);
         return driver.findElements(positionCardsCSSLocator);
@@ -101,39 +96,38 @@ public class EditProfilePage extends PageObject {
     }
 
     public void clickAddNewSkillBtn() {
-        scrollPage(1500);
+        scrollPage(3000);
         clickElement(addNewSkillBtn);
-        ngWebDriver.waitForAngularRequestsToFinish();
     }
 
     public void clickSeeMoreSkillsBtn() {
+        scrollPage(3000);
         clickElement(seeMoreSkillsBtn);
     }
 
     public boolean isSkillElementDisplayed(String skillName) {
         waitForElementToBeVisible(skillsCSSLocator);
         List<WebElement> skillElementsFound = driver.findElements(skillsCSSLocator);
-        ArrayList<String> skillNamesFound = new ArrayList<String>();
-        for (int i = 0; i < skillElementsFound.size(); i++) {
+        for (int i = skillElementsFound.size() - 1; i >= 0; i--) {
             String skillNameFound = skillElementsFound.get(i).getText();
-            skillNamesFound.add(skillNameFound);
+            if (skillNameFound.equals(skillName)) return true;
         }
-        return skillNamesFound.contains(skillName);
+        return false;
     }
 
     public void swapEducationEntries(String dragEducationName, String dropEducationName) {
-        By dragBtnXpathLocator = getEducationHandelBtnLocator(dragEducationName);
-        By dropBtnXpathLocator = getEducationHandelBtnLocator(dropEducationName);
+        By dragBtnXpathLocator = getEducationHandleBtnLocator(dragEducationName);
+        By dropBtnXpathLocator = getEducationHandleBtnLocator(dropEducationName);
         WebElement dragBtn = driver.findElement(dragBtnXpathLocator);
         WebElement dropBtn = driver.findElement(dropBtnXpathLocator);
         int dragBtnY = dragBtn.getLocation().getY();
         int dropBtnY = dropBtn.getLocation().getY();
+        scrollPage(2500);
         dragAndDropVertical(dragBtn, dragBtnY, dropBtnY);
     }
 
     private List<WebElement> getEducationEntries() {
-        ngWebDriver.waitForAngularRequestsToFinish();
-        scrollPage(1500);
+        scrollPage(2500);
         waitForElementToBeVisible(educatoinCardsCSSLocator);
         return driver.findElements(educatoinCardsCSSLocator);
     }
@@ -160,7 +154,7 @@ public class EditProfilePage extends PageObject {
         return null;
     }
 
-    private By getEducationHandelBtnLocator(String majorName) {
+    private By getEducationHandleBtnLocator(String majorName) {
         List<WebElement> educationEntries = getEducationEntries();
         By eduHandleBtnXpathLocator = null;
         for (int i = 0; i < educationEntries.size(); i++) {
@@ -173,5 +167,17 @@ public class EditProfilePage extends PageObject {
             }
         }
         return null;
+    }
+
+    public List<String> getEducationMajorsOrder() {
+        List<WebElement> educationEntries = getEducationEntries();
+        List<String> majorsFound = new ArrayList<String>();
+        for (int i = 0; i < educationEntries.size(); i++) {
+            WebElement eduMajorElement = educationEntries.get(i).findElement(eduMajorCSSLocator);
+            waitForElementToBeVisible(eduMajorElement);
+            String eduMajorFound = eduMajorElement.getText();
+            majorsFound.add(eduMajorFound);
+        }
+        return majorsFound;
     }
 }

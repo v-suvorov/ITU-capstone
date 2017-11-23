@@ -19,14 +19,15 @@ public class EducationSectionTestSuite {
 
     private final String userLogin = "Use email address for your LinkedIn account";
     private final String userPass = "Use password for your LinkedIn account";
-    private List<String> educationEntries = new ArrayList<String>();
+    private final String educationMajor1 = "Computer Software Engineering";
+    private final String educationMajor2 = "Management Information Systems";
 
     private LoginSteps loginSteps;
     private HomeSteps homeSteps;
     private EditProfileSteps editProfileSteps;
 
     @Parameters({"browserName", "envBaseURL"})
-    @BeforeSuite
+    @BeforeClass
     public void testSetup(String browserName, String envBaseURL) {
         driver = DriverFactory.initBrowser(browserName);
         ngWebDriver = DriverFactory.initNgWebDriver(driver, browserName);
@@ -44,25 +45,22 @@ public class EducationSectionTestSuite {
     }
 
     @Test(priority = 4,
-            enabled = false,
+            enabled = true,
             description = "Reorder education entries - can be done with drag&drop mouse action")
     public void dragAndDropEducationReorderingTest() {
-        editProfileSteps.swapEducationEntries("Computer Software Engineering", "Management Information Systems");
-//        educationEntries = editProfileSteps.getEducationEntriesOrder();
-//        int lastEdEntryIndex = educationEntries.size() - 1;
-//        editProfileSteps.swapEducationEntries(educationEntries.get(0), educationEntries.get(lastEdEntryIndex));
-//        editProfileSteps.verifyEducationEntriesOrderIsChanged(educationEntries, softAssert);
-//        editProfileSteps.verifyEducationEntriesOrder(educationEntries, 1, 2, softAssert);
+        List<String> majorsOrderBefore = editProfileSteps.getEducationEntriesOrder();
+        List<String> majorsOrderAfter = editProfileSteps.swapEducationEntries(educationMajor1, educationMajor2);
+        editProfileSteps.verifyEducationEntriesSwapped(educationMajor1,
+                educationMajor2,
+                majorsOrderBefore,
+                majorsOrderAfter,
+                softAssert);
         softAssert.assertAll();
     }
 
     @AfterMethod
-    public void afterTestMethod() {
-        driver.get("blank:blank");
-    }
+    public void afterTestMethod() {}
 
-    @AfterSuite
-    public void afterSuite() {
-        driver.quit();
-    }
+    @AfterClass
+    public void afterClass() {driver.close();}
 }

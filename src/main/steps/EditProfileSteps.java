@@ -9,6 +9,8 @@ import steps.dialogSteps.AddExperienceSteps;
 import steps.dialogSteps.AddSkillSteps;
 import steps.dialogSteps.EditExperienceSteps;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -66,7 +68,26 @@ public class EditProfileSteps {
         softAssert.assertEquals(editProfilePage.isSkillElementDisplayed(skillName), expected, "Adding of skill verification failed");
     }
 
-    public void swapEducationEntries(String dragEducationName, String dropEducationName) {
+    public List<String> swapEducationEntries(String dragEducationName, String dropEducationName) {
         editProfilePage.swapEducationEntries(dragEducationName, dropEducationName);
+        return editProfilePage.getEducationMajorsOrder();
+    }
+
+    public List<String> getEducationEntriesOrder() {
+        return editProfilePage.getEducationMajorsOrder();
+    }
+
+    public void verifyEducationEntriesSwapped(String major1,
+                                              String major2,
+                                              List<String> majorsOrderBefore,
+                                              List<String> majorsOrderAfter,
+                                              SoftAssert softAssert) {
+        softAssert.assertNotEquals(majorsOrderBefore, majorsOrderAfter, "Order of education entries has not been changed");
+        List<String> majorsOrderExpected = new ArrayList<String>(Arrays.asList("", ""));
+        int major1Idx = majorsOrderBefore.indexOf(major1);
+        int major2Idx = majorsOrderBefore.indexOf(major2);
+        majorsOrderExpected.set(major2Idx, major1);
+        majorsOrderExpected.set(major1Idx, major2);
+        softAssert.assertEquals(majorsOrderAfter, majorsOrderExpected, "Order of education entries is incorrect");
     }
 }

@@ -32,7 +32,7 @@ public class ExperienceSectionTestSuite {
     private ConfirmDeletionSteps confirmDeletionSteps;
 
     @Parameters({"browserName", "envBaseURL"})
-    @BeforeSuite
+    @BeforeClass
     public void testSetup(String browserName, String envBaseURL) {
         driver = DriverFactory.initBrowser(browserName);
         ngWebDriver = DriverFactory.initNgWebDriver(driver, browserName);
@@ -122,12 +122,10 @@ public class ExperienceSectionTestSuite {
     }
 
     @AfterMethod
-    public void resetDriverPage() {
-        driver.get("blank:blank");
-    }
+    public void resetDriverPage() {}
 
-    @AfterSuite
-    public void afterSuite() {
-        driver.quit();
+    @AfterClass
+    public void afterClass() {
+        driver.close();
     }
 }

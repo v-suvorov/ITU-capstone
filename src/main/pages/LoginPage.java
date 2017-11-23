@@ -33,7 +33,7 @@ public class LoginPage extends PageObject {
 
     public void clickLoginBtn() {
         clickElement(signInBtn);
-        ngWebDriver.waitForAngularRequestsToFinish();
+//        ngWebDriver.waitForAngularRequestsToFinish();
     }
 
 }

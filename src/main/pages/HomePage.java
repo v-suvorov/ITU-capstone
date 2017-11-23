@@ -19,7 +19,7 @@ public class HomePage extends PageObject {
 
     public void clickUserProfileImage() {
         clickElement(userProfileImage);
-        ngWebDriver.waitForAngularRequestsToFinish();
+//        ngWebDriver.waitForAngularRequestsToFinish();
     }
 
 }

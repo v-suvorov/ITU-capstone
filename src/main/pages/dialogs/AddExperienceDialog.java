@@ -77,7 +77,6 @@ public class AddExperienceDialog extends PageObject {
 
     public void clickSaveBtn() {
         clickElement(saveBtn);
-        ngWebDriver.waitForAngularRequestsToFinish();
     }
 
     public boolean isTitleErrorMsgDisplayed() {
@@ -146,7 +145,6 @@ public class AddExperienceDialog extends PageObject {
 
     public void clickCloseBtn() {
         clickElement(closeBtn);
-        ngWebDriver.waitForAngularRequestsToFinish();
     }
 
     public void waitForDialogClosed() {

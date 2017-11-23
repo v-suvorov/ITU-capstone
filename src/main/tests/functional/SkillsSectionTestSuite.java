@@ -25,7 +25,7 @@ public class SkillsSectionTestSuite {
     private AddSkillSteps addSkillSteps;
 
     @Parameters({"browserName", "envBaseURL"})
-    @BeforeSuite
+    @BeforeClass
     public void testSetup(String browserName, String envBaseURL) {
         driver = DriverFactory.initBrowser(browserName);
         ngWebDriver = DriverFactory.initNgWebDriver(driver, browserName);
@@ -59,11 +59,9 @@ public class SkillsSectionTestSuite {
 
     @AfterMethod
     public void afterTestMethod() {
-        driver.get("blank:blank");
+
     }
 
-    @AfterSuite
-    public void afterSuite() {
-        driver.quit();
-    }
+    @AfterClass
+    public void afterClass() {driver.close();}
 }

@@ -1,0 +1,10 @@
+<suite name="Google Maps API Distance Matrix Test Suite">
+    <parameter name="envBaseURL" value="https://maps.googleapis.com/maps/api" />
+    <parameter name="methodBasePath" value="/distancematrix/"/>
+    <parameter name="apiType" value="json" />
+    <test name="Test Suite">
+        <classes>
+            <class name="tests.API.MapsDistanceMatrixTestSuite" />
+        </classes>
+    </test>
+</suite>

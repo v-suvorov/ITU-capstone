@@ -3,13 +3,12 @@ package helpers;
 import com.paulhammant.ngwebdriver.NgWebDriver;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by vsuvorov on 10/21/17.
- */
 public class DriverFactory {
     public static WebDriver initBrowser(String browserName) {
         String osName = System.getProperty("os.name").toLowerCase();
@@ -17,11 +16,18 @@ public class DriverFactory {
         WebDriver driver = null;
         switch (browserName) {
             case "firefox":
-                //driver = new FirefoxDriver();
+                if (osName.contains("mac")) {
+                    System.setProperty("webdriver.gecko.driver", pathToDrivers + "geckodriver");
+                } else if (osName.contains("windows")) {}
+                driver = new FirefoxDriver();
                 break;
             case "ie":
-                //System.setProperty("webdriver.ie.driver", "C:\\Users\\abc\\Desktop\\Server\\IEDriverServer.exe");
-                //driver = new InternetExplorerDriver();
+                if (osName.contains("mac")) {
+                    //
+                } else if (osName.contains("windows")) {
+                    //System.setProperty("webdriver.ie.driver", "IEDriverServer.exe");
+                }
+                driver = new InternetExplorerDriver();
                 break;
             case "chrome":
                 if (osName.contains("mac")) {
