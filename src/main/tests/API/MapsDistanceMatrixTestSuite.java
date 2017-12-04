@@ -20,11 +20,11 @@ public class MapsDistanceMatrixTestSuite extends RestAPIMethods {
     private SoftAssert softAssert;
     private HashMap<String, String> parametersMap;
 
-    @Parameters({"envBaseURL", "methodBasePath", "apiType"})
-    @BeforeSuite
-    public void testSuitePrepare(String envBaseURL, String methodBasePath, String apiType) {
-        RestAssured.baseURI = envBaseURL;
-        RestAssured.basePath = methodBasePath + apiType;
+    @Parameters({"apiBaseURL", "apiMethodBasePath", "apiType"})
+    @BeforeClass
+    public void testSuitePrepare(String apiBaseURL, String apiMethodBasePath, String apiType) {
+        RestAssured.baseURI = apiBaseURL;
+        RestAssured.basePath = apiMethodBasePath + apiType;
     }
 
     @BeforeMethod
