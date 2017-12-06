@@ -2,13 +2,17 @@ package tests.functional;
 
 import com.paulhammant.ngwebdriver.NgWebDriver;
 import helpers.DriverFactory;
+import helpers.ExtentReportFactory;
 import org.openqa.selenium.WebDriver;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 import steps.EditProfileSteps;
 import steps.HomeSteps;
 import steps.LoginSteps;
 import steps.dialogSteps.AddSkillSteps;
+
+import java.lang.reflect.Method;
 
 public class SkillsSectionTestSuite {
     private NgWebDriver ngWebDriver;
@@ -23,6 +27,11 @@ public class SkillsSectionTestSuite {
     private HomeSteps homeSteps;
     private EditProfileSteps editProfileSteps;
     private AddSkillSteps addSkillSteps;
+
+    @BeforeSuite
+    public void setupReport() {
+        ExtentReportFactory.initExtentReports();
+    }
 
     @Parameters({"browserName", "envBaseURL"})
     @BeforeClass
@@ -45,7 +54,8 @@ public class SkillsSectionTestSuite {
     @Test(priority = 3,
             enabled = true,
             description = "Adding new skill - can not be added twice")
-    public void addingNewSkillTwiceTest() {
+    public void addingNewSkillTwiceTest(Method methodInstance) {
+        ExtentReportFactory.startTest(methodInstance.getAnnotation(Test.class).description());
         addSkillSteps = editProfileSteps.clickAddNewSkillBtn();
         addSkillSteps.typeInSkillName(newSkillToAdd);
         editProfileSteps = addSkillSteps.selectSearchResultFromDropdown();
@@ -58,10 +68,18 @@ public class SkillsSectionTestSuite {
     }
 
     @AfterMethod
-    public void afterTestMethod() {
-
+    public void generateReport(ITestResult result) {
+        ExtentReportFactory.generateExtentReport(result);
+        ExtentReportFactory.flush();
     }
 
     @AfterClass
-    public void afterClass() {driver.close();}
+    public void afterClass() {
+        driver.close();
+    }
+
+    @AfterSuite
+    public void closeReport() {
+        ExtentReportFactory.close();
+    }
 }

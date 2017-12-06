@@ -2,7 +2,6 @@ package steps;
 
 import com.paulhammant.ngwebdriver.NgWebDriver;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.testng.asserts.SoftAssert;
 import pages.EditProfilePage;
 import steps.dialogSteps.AddExperienceSteps;

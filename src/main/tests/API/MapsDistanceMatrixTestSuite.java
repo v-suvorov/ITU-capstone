@@ -2,11 +2,14 @@ package tests.API;
 
 import api.rest.RestAPIMethods;
 import com.jayway.jsonpath.ReadContext;
+import helpers.ExtentReportFactory;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,6 +22,11 @@ public class MapsDistanceMatrixTestSuite extends RestAPIMethods {
 
     private SoftAssert softAssert;
     private HashMap<String, String> parametersMap;
+
+    @BeforeSuite
+    public void setupReport() {
+        ExtentReportFactory.initExtentReports();
+    }
 
     @Parameters({"apiBaseURL", "apiMethodBasePath", "apiType"})
     @BeforeClass
@@ -35,7 +43,8 @@ public class MapsDistanceMatrixTestSuite extends RestAPIMethods {
     @Test(priority = 1,
             enabled = true,
             description = "Successful response on basic request")
-    public void statusSuccessTest() {
+    public void statusSuccessTest(Method methodInstance) {
+        ExtentReportFactory.startTest(methodInstance.getAnnotation(Test.class).description());
         parametersMap = setParametersMap(
                 "units", "imperial",
                 "origins", "Washington,DC",
@@ -56,7 +65,8 @@ public class MapsDistanceMatrixTestSuite extends RestAPIMethods {
             enabled = true,
             dependsOnMethods = {"statusSuccessTest"},
             description = "Structure of JSON response - pure Rest-Assured approach")
-    public void basicResponseStructureTest() {
+    public void basicResponseStructureTest(Method methodInstance) {
+        ExtentReportFactory.startTest(methodInstance.getAnnotation(Test.class).description());
         parametersMap = setParametersMap(
                 "units", "imperial",
                 "origins", "Washington, DC",
@@ -87,7 +97,8 @@ public class MapsDistanceMatrixTestSuite extends RestAPIMethods {
             enabled = true,
             dependsOnMethods = {"statusSuccessTest"},
             description = "Structure of JSON response - with the usage of JsonPath library and SoftAssert")
-    public void structureForTwoDestinationsTest() {
+    public void structureForTwoDestinationsTest(Method methodInstance) {
+        ExtentReportFactory.startTest(methodInstance.getAnnotation(Test.class).description());
         parametersMap = setParametersMap(
                 "units", "imperial",
                 "origins", "New York, NY",
@@ -118,7 +129,8 @@ public class MapsDistanceMatrixTestSuite extends RestAPIMethods {
             enabled = true,
             dependsOnMethods = {"statusSuccessTest"},
             description = "Types of returned values")
-    public void typesOfReturnedValuesTest() {
+    public void typesOfReturnedValuesTest(Method methodInstance) {
+        ExtentReportFactory.startTest(methodInstance.getAnnotation(Test.class).description());
         parametersMap = setParametersMap(
                 "units", "imperial",
                 "origins", "New York, NY",
@@ -143,7 +155,8 @@ public class MapsDistanceMatrixTestSuite extends RestAPIMethods {
             enabled = true,
             dependsOnMethods = {"statusSuccessTest"},
             description = "Structure of JSON response - when 2 origins are in request")
-    public void structureForTwoOriginsTest() {
+    public void structureForTwoOriginsTest(Method methodInstance) {
+        ExtentReportFactory.startTest(methodInstance.getAnnotation(Test.class).description());
         parametersMap = setParametersMap(
                 "units", "imperial",
                 "origins", "New York, NY|Chicago, IL",
@@ -167,7 +180,8 @@ public class MapsDistanceMatrixTestSuite extends RestAPIMethods {
     @Test(priority = 3,
             enabled = true,
             description = "Unsuccessful response on invalid request")
-    public void checkStatusAfterInvalidRequestTest() {
+    public void checkStatusAfterInvalidRequestTest(Method methodInstance) {
+        ExtentReportFactory.startTest(methodInstance.getAnnotation(Test.class).description());
         parametersMap = setParametersMap(
                 "units", "imperial",
                 "origins", "New York, NY",
@@ -180,5 +194,19 @@ public class MapsDistanceMatrixTestSuite extends RestAPIMethods {
                     .statusCode(200)
                     .and()
                     .body("status", equalTo("INVALID_REQUEST"));
+    }
+
+    @AfterMethod
+    public void generateReport(ITestResult result) {
+        ExtentReportFactory.generateExtentReport(result);
+        ExtentReportFactory.flush();
+    }
+
+    @AfterClass
+    public void afterClass() { }
+
+    @AfterSuite
+    public void closeReport() {
+        ExtentReportFactory.close();
     }
 }
