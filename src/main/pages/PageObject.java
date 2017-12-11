@@ -16,9 +16,9 @@ public class PageObject {
 
     protected NgWebDriver ngWebDriver;
     protected WebDriver driver;
-    protected WebDriverWait wait;
-    protected JavascriptExecutor jsExecutor;
-    protected static long TIME_TO_WAIT = 15;
+    private WebDriverWait wait;
+    private JavascriptExecutor jsExecutor;
+    private static long TIME_TO_WAIT = 15;
 
     /*
      * Method is created because standard
