@@ -1,4 +1,5 @@
-<suite name="All Tests Suite" parallel="none">
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="All Tests Suite">
     <parameter name="browserName" value="firefox" />
     <parameter name="envBaseURL" value="https://linkedin.com" />
     <parameter name="apiBaseURL" value="https://maps.googleapis.com/maps/api" />
